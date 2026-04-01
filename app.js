@@ -27,10 +27,21 @@ function showGames(list) {
 
 
 
+search.addEventListener('input', (e) => {
+    let valeur = e.target.value.toLowerCase(); 
+
+    
+    let resulta = games.filter(game => {
+        return game.title.toLowerCase().includes(valeur);
+    });
+
+    showGames(resulta); 
+});
 
 
-
-// Call the function to render games
 showGames(games);
+
+
+
 
 
