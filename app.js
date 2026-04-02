@@ -20,7 +20,9 @@ function showGames(list) {
                 <img src="${game.image}" class="w-full h-40 object-cover rounded">
                 <h3 class="mt-2 font-bold">${game.title}</h3>
                 <p class="text-green-500">${game.price} $</p>
-                <button class="bg-blue-600 w-full mt-2 py-1 rounded">Add</button>
+                <button onclick="addToCart(${game.id})" class="bg-blue-600 w-full mt-2 py-1 rounded hover:bg-blue-700 text-white font-semibold">
+   Add
+</button>
             </div>
         `;
     });
@@ -39,6 +41,29 @@ search.addEventListener('input', (e) => {
 
     showGames(resulta); 
 });
+
+
+window.addToCart = function(id) {
+   
+    var jeu = games.find(g => g.id === id);
+
+    if (jeu) {
+        panier.push(jeu);
+
+        
+        localStorage.setItem('game_cart', JSON.stringify(panier));
+
+        alert(jeu.title + " est ajoute au panier ");
+        console.log("Panier", panier);
+    }
+};
+
+
+
+
+
+
+
 
 
 showGames(games);
