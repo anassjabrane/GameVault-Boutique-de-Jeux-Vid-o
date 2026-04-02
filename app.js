@@ -1,6 +1,8 @@
 
 import { games } from "./data.js";
 
+let panier = JSON.parse(localStorage.getItem('game-cart')) || [];
+
 const grid = document.getElementById('game-grid');
 const search = document.getElementById('search_input');
 
