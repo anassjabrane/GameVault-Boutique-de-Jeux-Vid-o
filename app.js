@@ -1,10 +1,33 @@
 
 import { games } from "./data.js";
+let card = [];
 
-let panier = JSON.parse(localStorage.getItem('game-cart')) || [];
+let loadCart = JSON.parse(localStorage.getItem('game-cart')) || [];
+const saveCard = () => localStorage.setItem('game-cart', JSON.stringify(card));
 
 const grid = document.getElementById('game-grid');
 const search = document.getElementById('search_input');
+
+const listCard = document.getElementById('listCard');
+const btnStartCard = document.getElementById('startCard');
+const btnCloseListCard = document.getElementById("closeCart");
+const listCardItem = document.getElementById('cart-items-list');
+
+listCardItem.innerHTML = 'dfgdfgdfgdfg'
+
+const showListCard = () => {
+   listCard.classList.remove('translate-x-full');  
+    overlay.classList.remove('hidden');
+
+}
+
+const  closeCart = () => {
+    listCard.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+}
+
+btnStartCard.addEventListener('click', showListCard);
+btnCloseListCard.addEventListener('click', closeCart);
 
 // Debugging
 // console.log('Games imported:', games);
@@ -31,6 +54,10 @@ function showGames(list) {
 
 
 
+
+
+
+
 search.addEventListener('input', (e) => {
     let valeur = e.target.value.toLowerCase(); 
 
@@ -45,18 +72,22 @@ search.addEventListener('input', (e) => {
 
 window.addToCart = function(id) {
    
-    var jeu = games.find(g => g.id === id);
+    let game = games.find(g => g.id === id);
 
-    if (jeu) {
-        panier.push(jeu);
+    const item = card.find((t) =>t.game.id === id);
 
+    item ? item.qty++ : card.push({game, qty:1});
+
+   
+
+
+
+        alert(game.title + " est ajoute au panier ");
         
-        localStorage.setItem('game_cart', JSON.stringify(panier));
-
-        alert(jeu.title + " est ajoute au panier ");
-        console.log("Panier", panier);
     }
-};
+
+    console.log(card)
+
 
 
 

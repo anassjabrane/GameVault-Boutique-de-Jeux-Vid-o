@@ -7,16 +7,55 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-white p-5">
-    <input id="search_input" type="text" placeholder="Search For games" class="bg-gray-800 p-2 rounded mb-5">
-    <div id="category-filtres">
-        <button onclick="filterByCategory('All')"></button>
-        <button onclick="filterByCategory('All')"></button>
-        <button onclick="filterByCategory('All')"></button>
+
+<div class="flex justify-between items-center bg-slate-800 p-4 rounded-lg mb-6">
+    <div class="flex-1">
+        <input id="search_input" type="text" placeholder="Search for games..." 
+               class="bg-gray-700 text-white p-2 rounded-md w-64 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
     </div>
+
+    <div>
+        <button id="startCard" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-md flex items-center gap-2 transition-transform active:scale-95">
+            <span>🛒</span> Panier
+        </button>
+    </div>
+</div>
+     
+   
+    <!-- <div id="category-filtres">
+        <button onclick="filterByCategory('All')"></button>
+        <button onclick="filterByCategory('All')"></button>
+        <button onclick="filterByCategory('All')"></button>
+    </div> -->
     <!-- card de jeux -->
-    <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> 
+    <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> </div>
+
+<div id="listCard" class="fixed top-0 right-0 h-full w-80 bg-gray-900 shadow-2xl border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
+    
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-white italic">MY CART 🛒</h2>
+        <button id="closeCart" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+    </div>
+
+    <div id="cart-items-list" class="space-y-4">
+
+        
+        </div>
+
+    <div class="mt-8 border-t border-gray-800 pt-4">
+        <div class="flex justify-between text-lg font-bold text-white mb-4">
+            <span>Total:</span>
+            <span id="cart-total">0 $</span>
+        </div>
+        <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition-colors">
+            CHECKOUT
+        </button>
+    </div>
+</div>
+
+<div id="cart-overlay" class="fixed inset-0 bg-black/50 hidden z-40"></div>
 
 
-        <script type="module" src="app.js"></script>
+ <script type="module" src="app.js"></script>
 </body>
 </html>
