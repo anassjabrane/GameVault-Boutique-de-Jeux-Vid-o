@@ -12,6 +12,9 @@ const btnCloseListCard = document.getElementById("closeCart");
 const listCardItem = document.getElementById('cart-items-list');
 const cartTotal = document.getElementById('cart-total');
 
+const filterbtn=  document.querySelectorAll('filter-btn');
+
+
 // Zdna l-overlay b l-JS 7it ma-m'déclarich 3ndek
 const overlay = document.getElementById('cart-overlay'); 
 
@@ -95,5 +98,17 @@ search.addEventListener('input', (e) => {
     let resulta = games.filter(game => game.title.toLowerCase().includes(valeur));
     showGames(resulta); 
 });
+
+
+filterbtn.forEach(btn =>{
+    btn.addEventListener('click' , ()=>{
+        const selctuser =btn.getAttribute('data-genre');
+
+        if(selctuser === "All"){
+            showGames(games);
+        }
+        
+    })
+})
 
 showGames(games);
