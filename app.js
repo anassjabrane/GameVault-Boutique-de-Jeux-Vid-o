@@ -85,7 +85,7 @@ window.addToCart = function(id) {
         card.push({ game, qty: 1 });
     }
 
-    // 💾 Save to LocalStorage
+    //  Save to LocalStorage
     localStorage.setItem('game-cart', JSON.stringify(card));
     
     alert(game.title + " t-zad f l-panier! ✅");
