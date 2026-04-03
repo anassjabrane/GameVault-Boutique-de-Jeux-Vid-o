@@ -16,9 +16,16 @@
 
     <div>
         <button id="startCard" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-md flex items-center gap-2 transition-transform active:scale-95">
-            <span>🛒</span> Panier
+            <span></span> Panier
         </button>
     </div>
+</div>
+
+<div class="flex gap-4 mb-6 justify-center">
+    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="All">All</button>
+    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="Action">Action</button>
+    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="RPG">RPG</button>
+    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="FPS">FPS</button>
 </div>
      
    
@@ -33,7 +40,7 @@
 <div id="listCard" class="fixed top-0 right-0 h-full w-80 bg-gray-900 shadow-2xl border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
     
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold text-white italic">MY CART 🛒</h2>
+        <h2 class="text-xl font-bold text-white italic">MY CART </h2>
         <button id="closeCart" class="text-gray-400 hover:text-white text-2xl">&times;</button>
     </div>
 
@@ -48,7 +55,7 @@
             <span id="cart-total">0 $</span>
         </div>
         <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition-colors">
-            CHECKOUT
+            Commander
         </button>
     </div>
 </div>
