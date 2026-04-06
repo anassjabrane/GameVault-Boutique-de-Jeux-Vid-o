@@ -15,14 +15,14 @@ const cartTotal = document.getElementById('cart-total');
 const filterbtn=  document.querySelectorAll('filter-btn');
 
 
-// Zdna l-overlay b l-JS 7it ma-m'déclarich 3ndek
+
 const overlay = document.getElementById('cart-overlay'); 
 
-// --- Fonctions dial l-Ouverture / Fermeture ---
+// --- Fonctions Ouverture / Fermeture ---
 const showListCard = () => {
     listCard.classList.remove('translate-x-full');
     if(overlay) overlay.classList.remove('hidden');
-    renderCart(); // Fach n-7ellou l-panier, n-affichiw ach fih
+    renderCart(); 
 }
 
 const closeCart = () => {
@@ -88,8 +88,8 @@ window.addToCart = function(id) {
     //  Save to LocalStorage
     localStorage.setItem('game-cart', JSON.stringify(card));
     
-    alert(game.title + " t-zad f l-panier! ✅");
-    renderCart(); // Update l-affichage f l-blassa
+    alert(game.title + " est ajoute! ");
+    renderCart(); 
 }
 
 // Recherche
