@@ -59,7 +59,8 @@ inputcup.addEventListener('input',(e)=>{
     let resu =  games.find(game => game.title.toLowerCase().includes(valeur));
 
     if(resu === GAMER30){
-        
+
+
 
     }
 
@@ -148,6 +149,10 @@ filterbtn.forEach(btn =>{
             showGames(games);
         }else{
             showGames(games.filter((g) => g.category === selctuser));
+            for(let i=0 ; i<games.length; i++){
+                
+                push.category 
+            }
         }
 
         
