@@ -1,6 +1,6 @@
 import { games } from "./data.js";
 
-// 1. Initialisation (Kan-jbdou l-qdim mn LocalStorage)
+// 1. Initialisation (  LocalStorage)
 let card = JSON.parse(localStorage.getItem('game-cart')) || [];
 
 // Les éléments HTML
@@ -12,11 +12,13 @@ const btnCloseListCard = document.getElementById("closeCart");
 const listCardItem = document.getElementById('cart-items-list');
 const cartTotal = document.getElementById('cart-total');
 
-const filterbtn=  document.querySelectorAll('filter-btn');
+const filterbtn=  document.querySelectorAll('.filter-btn');
 
 
 
 const overlay = document.getElementById('cart-overlay'); 
+
+const inputcup = document.getElementById('search_cup')
 
 // --- Fonctions Ouverture / Fermeture ---
 const showListCard = () => {
@@ -51,34 +53,59 @@ function showGames(list) {
     });
 }
 
+
+inputcup.addEventListener('input',(e)=>{
+    let value  =  e.target.value.toLowerCase(); 
+    let resu =  games.find(game => game.title.toLowerCase().includes(valeur));
+
+    if(resu === GAMER30){
+        
+
+    }
+
+})
+
+
 // --- Fonction pour Afficher le contenu du Panier (Sidebar) ---
 function renderCart() {
     listCardItem.innerHTML = "";
     let total = 0;
 
-    card.forEach((item, index) => {
-        total += item.game.price * item.qty;
-        listCardItem.innerHTML += `
-            <div class="flex justify-between items-center bg-gray-800 p-3 rounded-lg mb-2">
-                <div class="flex items-center gap-3">
-                    <img src="${item.game.image}" class="w-12 h-12 object-cover rounded">
-                    <div>
-                        <h4 class="text-sm font-bold">${item.game.title}</h4>
-                        <p class="text-xs text-gray-400">Qty: ${item.qty}</p>
+ card.forEach((item) => {
+    total += item.game.price * item.qty;
+    listCardItem.innerHTML += `
+        <div class="flex justify-between items-center bg-gray-800 p-3 rounded-lg mb-2">
+            <div class="flex items-center gap-3">
+                <img src="${item.game.image}" class="w-12 h-12 object-cover rounded">
+                <div>
+                    <h4 class="text-sm font-bold">${item.game.title}</h4>
+                    
+                    <div class="flex items-center gap-2 mt-1">
+                        <button onclick="changeQty(${item.game.id}, -1)" class="bg-gray-700 px-2 rounded hover:bg-red-600">-</button>
+                        <span class="text-xs text-white">Qty: ${item.qty}</span>
+                        <button onclick="changeQty(${item.game.id}, 1)" class="bg-gray-700 px-2 rounded hover:bg-green-600">+</button>
                     </div>
+                    <div>
+                    <input id="search_cup" type="text" placeholder="Search for games..." 
+                    <p id ="reduction "><p/>
+                    <div/>
                 </div>
-                <p class="text-green-500 font-bold">${item.game.price * item.qty} $</p>
             </div>
-        `;
-    });
+            <p class="text-green-500 font-bold">${item.game.price * item.qty} $</p>
+        </div>
+    `;
+});
+
     cartTotal.innerText = `${total} $`;
 }
 
 // --- Fonction d'ajout au panier ---
 window.addToCart = function(id) {
+ 
     let game = games.find(g => g.id === id);
+   
     const item = card.find((t) => t.game.id === id);
-
+ 
     if (item) {
         item.qty++;
     } else {
@@ -90,6 +117,19 @@ window.addToCart = function(id) {
     
     alert(game.title + " est ajoute! ");
     renderCart(); 
+}
+
+
+window.changeQty = function(id, delta) {
+    const item = card.find((t) => t.game.id === id);
+    if (item) {
+         item.qty = item.qty +  delta;
+        if (item.qty < 1) {
+            card = card.filter((t) => t.game.id !== id);
+        }
+    }
+    localStorage.setItem('game-cart', JSON.stringify(card));
+    renderCart();
 }
 
 // Recherche
@@ -106,9 +146,20 @@ filterbtn.forEach(btn =>{
 
         if(selctuser === "All"){
             showGames(games);
+        }else{
+            showGames(games.filter((g) => g.category === selctuser));
         }
+
         
     })
 })
 
+document.getElementById('BtnCommande').addEventListener("click", () =>{
+      localStorage.setItem('game-cart', JSON.stringify([]));
+      location.reload();
+
+})
+
 showGames(games);
+
+
