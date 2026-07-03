@@ -9,30 +9,57 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-4 md:px-8">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="text-2xl font-black tracking-wider text-white flex items-center gap-2 select-none">
-                <i class="fa-solid fa-gamepad text-indigo-500"></i>
-                GAME<span class="text-indigo-500">VAULT</span>
-            </div>
-
-            <div class="relative w-full sm:w-72 lg:w-96">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+   <!-- HEADER / NAVIGATION -->
+<header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-4 md:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        
+        <!-- CREATIVE GAMING LOGO (GAMEVAULT CONCEPT) -->
+        <div class="text-2xl font-black tracking-wider text-white flex items-center gap-3 select-none group cursor-pointer">
+            <!-- Modern Shield/Vault & Wings Container -->
+            <div class="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600/20 to-slate-800 border border-indigo-500/30 group-hover:border-indigo-500/70 transition-all duration-300 shadow-lg shadow-indigo-500/5 group-hover:shadow-indigo-500/20">
+                
+                <!-- Left Wing (Effet Modern/Gamer) -->
+                <i class="fa-solid fa-feather-pointed absolute -left-2 text-indigo-400/40 text-xs -scale-x-100 rotate-12 group-hover:-left-2.5 group-hover:text-indigo-400 transition-all duration-300"></i>
+                
+                <!-- Center Vault Shield -->
+                <i class="fa-solid fa-shield text-indigo-500 text-xl group-hover:scale-110 transition-transform duration-300"></i>
+                
+                <!-- Embedded Mini Gamepad -->
+                <i class="fa-solid fa-gamepad text-white text-[10px] absolute inset-auto z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"></i>
+                
+                <!-- Right Wing (Effet Modern/Gamer) -->
+                <i class="fa-solid fa-feather-pointed absolute -right-2 text-indigo-400/40 text-xs -rotate-12 group-hover:-right-2.5 group-hover:text-indigo-400 transition-all duration-300"></i>
+                
+                <!-- Tiny Lock/Vault Indicator -->
+                <span class="absolute -bottom-1 -right-1 bg-indigo-500 text-[8px] text-slate-950 w-3.5 h-3.5 rounded-full flex items-center justify-center border border-slate-900 font-bold">
+                    <i class="fa-solid fa-lock text-[7px]"></i>
                 </span>
-                <input id="search_input" type="text" placeholder="Rechercher un jeu d'élite..." 
-                       class="w-full bg-slate-800 text-white placeholder-slate-500 pl-10 pr-4 py-2.5 rounded-xl border border-slate-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300 text-sm">
             </div>
-
-            <div>
-                <button id="startCard" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold py-2.5 px-5 rounded-xl flex items-center gap-3 transition-all duration-300 transform active:scale-95 group">
-                    <i class="fa-solid fa-cart-shopping text-indigo-400 group-hover:animate-bounce"></i> 
-                    <span>Panier</span>
-                </button>
-            </div>
+            
+            <!-- Typography with Interactive Glow -->
+            <span class="tracking-widest">
+                GAME<span class="text-indigo-500 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)] group-hover:text-indigo-400 transition-colors duration-300">VAULT</span>
+            </span>
         </div>
-    </header>
+
+        <!-- SEARCH INPUT (Unchanged Colors) -->
+        <div class="relative w-full sm:w-72 lg:w-96">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <i class="fa-solid fa-magnifying-glass text-sm"></i>
+            </span>
+            <input id="search_input" type="text" placeholder="Rechercher un jeu d'élite..." 
+                   class="w-full bg-slate-800 text-white placeholder-slate-500 pl-10 pr-4 py-2.5 rounded-xl border border-slate-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300 text-sm">
+        </div>
+
+        <!-- CART BUTTON (Unchanged Colors) -->
+        <div>
+            <button id="startCard" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold py-2.5 px-5 rounded-xl flex items-center gap-3 transition-all duration-300 transform active:scale-95 group">
+                <i class="fa-solid fa-cart-shopping text-indigo-400 group-hover:animate-bounce"></i> 
+                <span>Panier</span>
+            </button>
+        </div>
+    </div>
+</header>
 
     <!-- MAIN CONTAINER -->
     <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10">
@@ -50,11 +77,11 @@
             </button>
             <!-- Correction hna : Trj3 data-genre="Sport" f blast "FPS" -->
             <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="Sport">
-                Sport
+                MMORPG
             </button>
             <!-- Zdna l-bouton dial les jeux de Course jdad -->
             <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="Course">
-                Course
+                Shooter
             </button>
         </div>
 
