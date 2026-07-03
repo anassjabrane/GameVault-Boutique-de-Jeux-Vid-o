@@ -1,70 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GameVault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-white p-5">
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
 
-<div class="flex justify-between items-center bg-slate-800 p-4 rounded-lg mb-6">
-    <div class="flex-1">
-        <input id="search_input" type="text" placeholder="Search for games..." 
-               class="bg-gray-700 text-white p-2 rounded-md w-64 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-    </div>
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-4 md:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-2xl font-black tracking-wider text-white flex items-center gap-2 select-none">
+                <i class="fa-solid fa-gamepad text-indigo-500"></i>
+                GAME<span class="text-indigo-500">VAULT</span>
+            </div>
 
-    <div>
-        <button id="startCard" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-md flex items-center gap-2 transition-transform active:scale-95">
-            <span><i class="fa-solid fa-cart-shopping"></i></span> Panier
-        </button>
-    </div>
-</div>
+            <div class="relative w-full sm:w-72 lg:w-96">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </span>
+                <input id="search_input" type="text" placeholder="Rechercher un jeu d'élite..." 
+                       class="w-full bg-slate-800 text-white placeholder-slate-500 pl-10 pr-4 py-2.5 rounded-xl border border-slate-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300 text-sm">
+            </div>
 
-<div class="flex gap-4 mb-6 justify-center">
-    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="All">All</button>
-    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="Action">Action</button>
-    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="RPG">RPG</button>
-    <button class="filter-btn bg-gray-800 px-4 py-2 rounded" data-genre="FPS">Sport</button>
-</div>
-     
-   
-    <!-- <div id="category-filtres">
-        <button onclick="filterByCategory('All')"></button>
-        <button onclick="filterByCategory('All')"></button>
-        <button onclick="filterByCategory('All')"></button>
-    </div> -->
-    <!-- card de jeux -->
-    <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> </div>
+            <div>
+                <button id="startCard" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold py-2.5 px-5 rounded-xl flex items-center gap-3 transition-all duration-300 transform active:scale-95 group">
+                    <i class="fa-solid fa-cart-shopping text-indigo-400 group-hover:animate-bounce"></i> 
+                    <span>Panier</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div id="listCard" class="fixed top-0 right-0 h-full w-80 bg-gray-900 shadow-2xl border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
-    
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold text-white italic">MY CART </h2>
-        <button id="closeCart" class="text-gray-400 hover:text-white text-2xl">&times;</button>
-    </div>
-
-    <div id="cart-items-list" class="space-y-4">
-
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10">
         
+        <!-- FILTRES -->
+        <div class="flex flex-wrap gap-3 justify-center items-center bg-slate-900 border border-slate-800 p-3 rounded-2xl max-w-3xl mx-auto">
+            <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-indigo-600 text-white border border-indigo-600 shadow-lg shadow-indigo-600/20" data-genre="All">
+                Tout
+            </button>
+            <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="Action">
+                Action
+            </button>
+            <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="RPG">
+                RPG
+            </button>
+            <!-- Correction hna : Trj3 data-genre="Sport" f blast "FPS" -->
+            <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="Sport">
+                Sport
+            </button>
+            <!-- Zdna l-bouton dial les jeux de Course jdad -->
+            <button class="filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500" data-genre="Course">
+                Course
+            </button>
         </div>
 
-    <div class="mt-8 border-t border-gray-800 pt-4">
-        <div class="flex justify-between text-lg font-bold text-white mb-4">
-            <span>Total:</span>
-            <span id="cart-total">0 $</span>
+        <!-- GRID DES JEUX -->
+        <section>
+            <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"> </div>
+        </section>
+
+    </main>
+
+    <!-- SIDE PANIER -->
+    <div id="listCard" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-slate-900 shadow-2xl border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 flex flex-col justify-between">
+        
+        <div>
+            <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                <h2 class="text-xl font-black text-white tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-indigo-500"></i> VOTRE PANIER
+                </h2>
+                <button id="closeCart" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-red-500/20 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 text-lg">&times;</button>
+            </div>
+
+            <div id="cart-items-list" class="space-y-4 max-h-[65vh] overflow-y-auto pr-1"> </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto">
+            <div class="flex justify-between items-center text-lg font-bold text-white mb-5">
+                <span class="text-slate-400 font-medium">Montant Total:</span>
+                <span id="cart-total" class="text-2xl font-black text-indigo-400 tracking-tight">0 $</span>
+            </div>
             
+            <button id="BtnCommande" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 flex items-center justify-center gap-2 transform active:scale-[0.98]">
+                <i class="fa-solid fa-credit-card"></i> Passer la commande
+            </button>
         </div>
-        <button id="BtnCommande" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition-colors">
-            Commander
-        </button>
     </div>
-</div>
 
-<div id="cart-overlay" class="fixed inset-0 bg-black/50 hidden z-40"></div>
+    <!-- OVERLAY BACKGROUND -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/70 hidden z-40 transition-opacity duration-300"></div>
 
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
- <script type="module" src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
