@@ -1,30 +1,68 @@
 let games = [];
 
-async function loadGames() {
-    const response = await fetch(
-        "https://www.freetogame.com/api/games"
-    );
-
-    const data = await response.json();
-
-    games = data.map(game => ({
-        id: game.id,
-        title: game.title,
-        price: Math.floor(Math.random() * 50) + 20,
-        category: game.genre,
-        image: game.thumbnail,
-        description: game.short_description
-    }));
-
-    showGames(games);
-    fetch("https://www.freetogame.com/api/games")
-  .then(res => res.json())
-  .then(data => console.log(data));
+// --- 1. FONCTION : Afficher l'état de chargement (Skeleton Loader) ---
+function showLoader() {
+    const grid = document.getElementById('game-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = "";
+    // N7to 6 dyal les cartes fictives animated bl-Tailwind
+    for (let i = 0; i < 6; i++) {
+        grid.innerHTML += `
+            <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between animate-pulse">
+                <div>
+                    <div class="bg-slate-800/60 rounded-xl h-40 w-full"></div>
+                    <div class="h-4 bg-slate-800/60 rounded w-2/3 mt-4"></div>
+                    <div class="h-3 bg-slate-800/40 rounded w-full mt-2"></div>
+                    <div class="h-3 bg-slate-800/40 rounded w-4/5 mt-1"></div>
+                </div>
+                <div class="mt-6 flex flex-col gap-2">
+                    <div class="h-5 bg-slate-800/50 rounded w-1/4"></div>
+                    <div class="h-9 bg-slate-800/60 rounded-xl w-full mt-1"></div>
+                </div>
+            </div>
+        `;
+    }
 }
 
-loadGames();
+// --- 2. Chargement des données (Fetch API) ---
+async function loadGames() {
+    showLoader(); // Lansi l-loading houwa l-owl
 
-// 1. Initialisation (LocalStorage)
+    try {
+        const response = await fetch("https://www.freetogame.com/api/games");
+        
+        if (!response.ok) throw new Error("Erreur de réseau");
+        
+        const data = await response.json();
+
+        games = data.map(game => ({
+            id: game.id,
+            title: game.title,
+            price: Math.floor(Math.random() * 50) + 20,
+            category: game.genre,
+            image: game.thumbnail,
+            description: game.short_description
+        }));
+
+        // Mli t-wjed l-data, n-affichiw l-jeux u l-loader ghadi yt7yed bo7do
+        showGames(games);
+
+    } catch (error) {
+        console.error("Erreur lors du chargement des jeux:", error);
+        const grid = document.getElementById('game-grid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <i class="fa-solid fa-triangle-exclamation text-indigo-500 text-3xl mb-3 animate-bounce"></i>
+                    <p class="text-slate-400 text-sm font-semibold">Impossible de charger les jeux. Veuillez vérifier votre connexion ou rafraîchir.</p>
+                </div>
+            `;
+        }
+    }
+}
+
+// --- Initialisation du Panier u LocalStorage ---
 let card = JSON.parse(localStorage.getItem('game-cart')) || [];
 let discountPercentage = 0; 
 
@@ -51,20 +89,20 @@ couponWrapper.innerHTML = `
     <p id="reduction" class="text-xs font-semibold text-emerald-400 hidden"></p>
 `;
 
-// --- Fonctions Ouverture / Fermeture ---
+// --- Fonctions Ouverture / Fermeture Panier ---
 const showListCard = () => {
-    listCard.classList.remove('translate-x-full');
+    if(listCard) listCard.classList.remove('translate-x-full');
     if(overlay) overlay.classList.remove('hidden');
     renderCart(); 
 }
 
 const closeCart = () => {
-    listCard.classList.add('translate-x-full');
+    if(listCard) listCard.classList.add('translate-x-full');
     if(overlay) overlay.classList.add('hidden');
 }
 
-btnStartCard.addEventListener('click', showListCard);
-btnCloseListCard.addEventListener('click', closeCart);
+if(btnStartCard) btnStartCard.addEventListener('click', showListCard);
+if(btnCloseListCard) btnCloseListCard.addEventListener('click', closeCart);
 if(overlay) overlay.addEventListener('click', closeCart);
 
 // --- Fonction Notification Toast ---
@@ -94,13 +132,20 @@ function showNotification(message) {
 
 // --- Fonction d'affichage des jeux ---
 function showGames(list) {
+    if (!grid) return;
     grid.innerHTML = ""; 
+    
+    if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center text-slate-500 py-12">Aucun jeu trouvé...</div>`;
+        return;
+    }
+
     list.forEach(game => {
         grid.innerHTML += `
             <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between group hover:border-indigo-500/40 transition-all duration-300">
                 <div>
                     <div class="relative overflow-hidden rounded-xl h-40">
-                        <img src="${game.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="${game.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
                         <span class="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-sm text-indigo-400 text-[10px] font-black uppercase px-2 py-0.5 rounded-md border border-slate-800">
                             ${game.category}
                         </span>
@@ -123,9 +168,13 @@ function showGames(list) {
 
 // --- Fonction pour Afficher le contenu du Panier ---
 function renderCart() {
+    if (!listCardItem) return;
     listCardItem.innerHTML = "";
     listCardItem.appendChild(couponWrapper);
     
+    // Configurer l'écouteur du coupon ici dba bach maydiirch l-bug
+    initCouponListener();
+
     const inputCup = document.getElementById('search_cup');
     if(inputCup) {
         inputCup.value = discountPercentage > 0 ? "GAMER30" : "";
@@ -164,21 +213,28 @@ function renderCart() {
     if (discountPercentage > 0) {
         let discountAmount = total * (discountPercentage / 100);
         let finalTotal = total - discountAmount;
-        cartTotal.innerText = `${finalTotal.toFixed(2)} $`;
+        if(cartTotal) cartTotal.innerText = `${finalTotal.toFixed(2)} $`;
         
         if (reductionElement) {
             reductionElement.innerText = `🎁 Coupon appliqué: -${discountPercentage}% (-${discountAmount.toFixed(2)} $)`;
             reductionElement.classList.remove('hidden');
         }
     } else {
-        cartTotal.innerText = `${total.toFixed(2)} $`;
+        if(cartTotal) cartTotal.innerText = `${total.toFixed(2)} $`;
         if (reductionElement) reductionElement.classList.add('hidden');
     }
 }
 
-// --- Logic de Coupon ---
-function initCouponGlobal() {
-    couponWrapper.querySelector('#btn_apply_cup').addEventListener('click', () => {
+// --- Logic de Coupon (Sécurisée) ---
+function initCouponListener() {
+    const btnApply = couponWrapper.querySelector('#btn_apply_cup');
+    if(!btnApply) return;
+    
+    // Nettoyer l'ancien listener pour éviter les doublons
+    const newBtnApply = btnApply.cloneNode(true);
+    btnApply.parentNode.replaceChild(newBtnApply, btnApply);
+
+    newBtnApply.addEventListener('click', () => {
         const inputCup = couponWrapper.querySelector('#search_cup');
         const reductionElement = couponWrapper.querySelector('#reduction');
         let value = inputCup.value.trim().toUpperCase();
@@ -193,7 +249,7 @@ function initCouponGlobal() {
             discountPercentage = 0;
             reductionElement.innerText = "❌ Code invalide.";
             reductionElement.className = "text-xs font-semibold text-red-400 block";
-            cartTotal.innerText = `${card.reduce((t, i) => t + i.game.price * i.qty, 0).toFixed(2)} $`;
+            if(cartTotal) cartTotal.innerText = `${card.reduce((t, i) => t + i.game.price * i.qty, 0).toFixed(2)} $`;
         }
     });
 }
@@ -201,6 +257,7 @@ function initCouponGlobal() {
 // --- Fonction d'ajout au panier ---
 window.addToCart = function(id) {
     let game = games.find(g => g.id === id);
+    if (!game) return;
     const item = card.find((t) => t.game.id === id);
 
     if (item) {
@@ -230,6 +287,7 @@ window.changeQty = function(id, delta) {
 // --- Supprimer définitivement un jeu du panier ---
 window.removeFromCart = function(id) {
     let game = games.find(g => g.id === id);
+    if (!game) return;
     card = card.filter((t) => t.game.id !== id);
     
     localStorage.setItem('game-cart', JSON.stringify(card));
@@ -238,11 +296,13 @@ window.removeFromCart = function(id) {
 }
 
 // --- Recherche en temps réel ---
-search.addEventListener('input', (e) => {
-    let valeur = e.target.value.toLowerCase(); 
-    let resulta = games.filter(game => game.title.toLowerCase().includes(valeur));
-    showGames(resulta); 
-});
+if(search) {
+    search.addEventListener('input', (e) => {
+        let valeur = e.target.value.toLowerCase(); 
+        let resulta = games.filter(game => game.title.toLowerCase().includes(valeur));
+        showGames(resulta); 
+    });
+}
 
 // --- Filtres de Catégories ---
 filterbtn.forEach(btn => {
@@ -263,35 +323,32 @@ filterbtn.forEach(btn => {
 });
 
 // --- Commande / Checkout ---
-document.getElementById('BtnCommande').addEventListener("click", () => {
-    if (card.length === 0) {
-        showNotification("⚠️ Votre panier est vide !");
-        return;
-    }
-    
-    // Remplacement de l'alert natif par la notification Toast personnalisée
-    showNotification("🚀 Commande validée avec succès ! Merci pour votre confiance.");
-    
-    // Réinitialisation de l'état du panier
-    card = [];
-    discountPercentage = 0;
-    localStorage.setItem('game-cart', JSON.stringify([]));
-    
-    // Fermeture propre du volet coulissant et rafraîchissement
-    closeCart();
-    showGames(games);
-    
-    // Réinitialisation visuelle des filtres (Bouton 'Tout' actif)
-    filterbtn.forEach((b, idx) => {
-        if(idx === 0) {
-            b.className = "filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-indigo-600 text-white border border-indigo-600 shadow-lg shadow-indigo-600/20";
-        } else {
-            b.className = "filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500";
+const btnCommande = document.getElementById('BtnCommande');
+if(btnCommande) {
+    btnCommande.addEventListener("click", () => {
+        if (card.length === 0) {
+            showNotification("⚠️ Votre panier est vide !");
+            return;
         }
+        
+        showNotification("🚀 Commande validée avec succès ! Merci pour votre confiance.");
+        
+        card = [];
+        discountPercentage = 0;
+        localStorage.setItem('game-cart', JSON.stringify([]));
+        
+        closeCart();
+        showGames(games);
+        
+        filterbtn.forEach((b, idx) => {
+            if(idx === 0) {
+                b.className = "filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-indigo-600 text-white border border-indigo-600 shadow-lg shadow-indigo-600/20";
+            } else {
+                b.className = "filter-btn px-5 py-2 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 bg-slate-800 text-slate-400 border border-slate-700 hover:text-white hover:border-slate-500";
+            }
+        });
     });
-});
+}
 
-
-// --- Lancer la page ---
-initCouponGlobal();
-// showGames(games);
+// --- Lancer le chargement au démarrage ---
+loadGames();
